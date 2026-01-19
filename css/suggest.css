@@ -1,0 +1,52 @@
+.suggest {
+    display: flex;
+    position: relative;
+    border: 1px solid #eaeaeb;
+}
+
+.suggest input, .suggest input:not([type=checkbox]):not([type=radio]):not([type=range]) {
+    flex: 1 1 auto;
+    background: none;
+    padding: 0.5rem;
+}
+
+.suggest .lista {
+    position: absolute;
+    top: 2rem;
+    left: -1px;
+    width: calc(100% + 2px);
+    border: 1px solid #eaeaeb;
+    box-shadow: 0 0.5rem 0.5rem #eaeaeb;
+    background: white;
+    overflow: auto;
+    z-index: 6;
+}
+
+.suggest .lista a {
+    display: block;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    color: black;
+}
+
+.suggest .lista a.hover {
+    background-color: #eeeeee;
+}
+
+.dark .suggest {
+    border: 1px solid black;
+}
+
+.dark .suggest .lista {
+    background: transparent;
+    border: 1px solid black;
+    box-shadow: 0 0.5rem 0.5rem black;
+}
+
+.dark .suggest .lista a {
+    color: #626262;
+}
+
+.dark .suggest .lista a.hover {
+    background-color: #192734;
+}

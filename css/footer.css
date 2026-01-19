@@ -1,0 +1,149 @@
+
+/* Links em lista com ícones */
+.lista-icone li a {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: -0.25rem;
+    height: 1.875rem; /*30px;*/
+    padding: 0.15625rem;
+    color: #004168;
+}
+
+.lista-icone li a:hover {
+    text-decoration: none;
+}
+
+.lista-icone li a:hover span:last-of-type {
+    text-decoration: underline;
+    color: #d59118;
+}
+
+.lista-icone li i:first-child {
+    flex-grow: 0;
+    align-self: center;
+    margin-right: 0.5rem;
+}
+
+.lista-icone li i:nth-child(3n) {
+    flex-grow: 0;
+    align-self: center;
+    margin-left: 0.5rem;
+}
+
+.lista-icone li span {
+    flex-grow: 1;
+    margin-right: 0;
+}
+
+.lista-icone li span.simbolo {
+    flex-grow: 0;
+    width: 1.5rem;
+    font-size: 1.5rem;
+    align-self: center;
+    margin-right: 0.5rem;
+}
+
+.lista-icone li img {
+    flex-grow: 0;
+    width: 1rem;
+    align-self: center;
+    margin-right: 0.5rem;
+}
+
+.lista-icone svg {
+    flex-grow: 0;
+    width: 1.5rem;
+    align-self: center;
+    margin-right: 0.5rem;
+}
+
+/*novo footer*/
+#rodape {
+    font-size: 14px;
+    padding: 0.75rem 0.625rem 0.625rem 0.9375rem;
+    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    background: url("../images/bg-amarelo.svg") #ffe600 no-repeat center bottom;
+    background-size: 100% 9rem;
+    min-height: 10rem;
+
+    background-color: #ffe600;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+
+#rodape .rodape-links {
+    grid-column: span 12;
+    margin: 0.9375rem 0rem 0rem 0rem;
+}
+
+@media screen and (min-width: 992px) {
+    #rodape {
+        background-size: 100% 150px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    #rodape .rodape-links {
+        grid-column: span 6;
+    }
+}
+@media screen and (min-width: 768px) {
+    #rodape .rodape-links {
+        grid-column: span 4;
+    }
+}
+
+#rodape .marca-gov {
+    margin-top: 2.1875rem;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 2.1875rem;
+}
+
+#rodape .marca-gov img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 450px;
+}
+
+.recipiente {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+    .recipiente {
+        grid-gap: 2rem;
+    }
+}
+
+.largura-maxima {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#rodape h2 {
+    /*font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--azul-escuro);*/
+
+    margin-bottom: 1.0rem;
+    line-height: 1.2em;
+    font-size: 1.602em;
+    color: var(--azul-escuro);
+
+    font-weight: bold;
+}
+
+.copyright {
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+    

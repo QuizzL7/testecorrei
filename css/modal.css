@@ -1,0 +1,68 @@
+.modal {
+    display: none;
+    z-index: 11;
+}
+
+.modal.aberto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.modal section {
+    background: white;
+    padding: 1rem;
+    width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+}
+
+@media (min-width: 768px) {
+    .modal > section {
+        width: auto;
+        height: auto;
+    }
+}
+
+body.modal-aberto {
+    overflow: hidden;
+    padding-right: 17px;
+}
+
+body.touch.modal-aberto, body.modo-foco.modal-aberto {
+    padding-right: 0;
+}
+
+.modal header {
+    display: flex;
+}
+
+.modal header h1 {
+    white-space: nowrap;
+    text-align: left;
+    font-size: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+    .modal header h1 {
+        white-space: nowrap;
+    }
+}
+
+.modal header .fechar {
+    margin-left: auto;
+    flex: 0 0 1.25rem;
+    background: url("../images/close-light-gray.svg") no-repeat center top;
+    background-size: contain;
+}
+
+.modal header .fechar:hover {
+    background-image: url("../images/close-gray.svg");
+}

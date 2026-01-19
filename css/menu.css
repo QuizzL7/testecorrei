@@ -1,0 +1,430 @@
+#menu {
+    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+    height: var(--altura-menu);
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid white;
+    border-bottom: 1px solid #ffd400;
+    padding: 0.5rem 0.75rem;
+    /* background: url("../img/logo-ect.svg") no-repeat center #f5f3f0;
+    background-size: auto 50%; */
+    background: url("../images/logo-Correios360.png") no-repeat center #f5f3f0 ;
+    background-size: auto 80%;    
+}
+
+body.modo-foco #menu {
+    position: fixed;
+}
+
+#menu .hamburger {
+    flex: 0 0 2rem;
+    margin-right: 1rem;
+    background: url("../images/menu.svg") no-repeat center left;
+    background-size: 2rem;
+    user-select: none;
+}
+
+#menu .hamburger.aberto {
+    background: url("../images/menu-open.svg") no-repeat center left;
+    background-size: 2rem;
+}
+
+#menu .logo {
+    flex: 1 1 auto;
+    padding-left: 0;
+}
+
+@media (min-width: 1024px) {
+
+    #menu {
+        background-image: none;
+    }
+
+    #menu .logo {
+        /* background: url("../img/logo-ect.svg") no-repeat left;
+        height: 1.75rem;
+        background-size: auto 90%; */
+        background: url("../images/logo-Correios360.png") no-repeat left;
+        height: 50px;        
+        background-size: auto 90%;        
+    }
+}
+
+#menu > a {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    height: 2rem;
+}
+
+#menu .pesquisar, #menu .entrar, #menu .nome {
+    padding-left: 3.5rem;
+    background-size: 2rem;
+    border-left: 1px solid #d1ccc7;
+    display: none;
+}
+
+#menu .nome {
+    padding: 0 1.5rem 0 1rem;
+    text-transform: capitalize;
+    background: url("../images/arrow-down.svg") no-repeat right center;
+    user-select: none;
+}
+
+#menu .nome.aberto {
+    background: url("../images/arrow-up.svg") no-repeat right center;
+}
+
+@media (min-width: 1024px) {
+    #menu .entrar, #menu .nome {
+        display: flex;
+    }
+}
+
+#menu .pesquisar {
+    background: url("../images/pesquisar.svg") no-repeat left 0.8rem center;
+}
+
+#menu .pesquisar:before {
+    content: "Pesquisar";
+}
+
+#menu .entrar {
+    background: url("../images/entrar.svg") no-repeat left 1rem center;
+}
+
+#menu .entrar:before {
+    content: "Entrar";
+    /*font-weight: 600;*/
+}
+
+#menu .sair:before {
+    content: "Sair";
+}
+
+#menu > .menu {
+    position: absolute;
+    background-color: #f5f3f0;
+    top: var(--altura-menu);
+    left: 0;
+    z-index: 10;
+    width: 85%;
+    height: calc(100vh - 5.5rem);
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: auto;
+}
+
+@media (min-width: 768px) {
+    #menu > .menu {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1024px) {
+    #menu > .menu {
+        width: 15rem;
+    }
+}
+
+#menu > .menu a {
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    background: url("../images/arrow-right-blue.svg") no-repeat center right 0.75rem;
+    user-select: none;
+}
+
+
+@media (min-width: 1024px) {
+    #menu > .menu a:not(.voltar) {
+        padding: 0.5rem 1rem;
+    }
+}
+
+#menu > .menu a.voltar {
+    background: url("../images/arrow-left.svg") no-repeat center left 0.5rem #efedea;
+    border-bottom: 1px solid #d1ccc7;
+    padding-left: 2.25rem;
+}
+
+#menu > .menu a[href] {
+    background: none;
+}
+
+#menu > .menu div {
+    position: absolute;
+    background-color: #f5f3f0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#menu > .menu div.aberto {
+    left: 0;
+}
+
+#menu > .menu section {
+    padding: 1rem;
+    border-bottom: 1px solid #d1ccc7;
+    margin-bottom: 0.75rem;
+    background: url("../images/bg-amarelo.svg") #ffe600 center bottom no-repeat;
+    background-size: 100% 150px;
+}
+
+#menu > .menu section h1 {
+    margin-bottom: 1rem;
+    user-select: none;
+}
+
+#menu > .menu section p {
+    margin-bottom: 1rem;
+}
+
+#menu > .menu section a.nome-usuario-logado {
+    text-transform: capitalize;
+    display: block;
+    border-left: none;
+    padding-left: 0;
+    background: url("../images/arrow-down.svg") no-repeat right center;
+}
+
+#menu > .menu section a.nome-usuario-logado.aberto {
+    background: url("../images/arrow-up.svg") no-repeat right center;
+}
+
+@media (min-width: 1024px) {
+    #menu > .menu section a.nome-usuario-logado {
+        display: none;
+    }
+}
+
+#menu > .menu section p:last-child {
+    margin-bottom: 0;
+}
+
+#menu > .menu section a {
+    display: block;
+    padding: 0;
+}
+
+@media (min-width: 1024px) {
+    #menu > .menu section {
+        background: transparent;
+    }
+
+    #menu > .menu section a, menu section p {
+        display: none;
+    }
+
+    #menu > .menu section p.nome {
+        display: none;
+    }
+
+    #menu > .menu section h1 {
+        margin: 0;
+        font-size: 1rem;
+        color: black;
+    }
+}
+
+#menu > .menu a.monitor,
+#menu > .menu a.find,
+#menu > .menu a.phone,
+#menu > .menu a.people,
+#menu > .menu a.chat,
+#menu > .menu a.find-person,
+#menu > .menu a.help,
+#menu > .menu a.expand {
+    background-position: left 4px center, right 4px center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: 1.5rem, 1.5rem;
+    padding-left: 2rem;
+}
+
+#menu > .menu a[href].monitor,
+#menu > .menu a[href].find,
+#menu > .menu a[href].phone,
+#menu > .menu a[href].people,
+#menu > .menu a[href].chat,
+#menu > .menu a[href].find-person,
+#menu > .menu a[href].help,
+#menu > .menu a[href].expand {
+    background-position: center left 0.85rem;
+    background-repeat: no-repeat;
+    background-size: 1.5rem;
+    padding-left: 2.75rem;
+}
+
+#menu > .menu a.monitor {
+    background-image: url("../images/monitor-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.monitor:hover {
+    background-image: url("../images/monitor-brown.svg"), url("../images/arrow-right-brown.svg");
+}
+
+#menu > .menu a[href].monitor {
+    background-image: url("../images/monitor-blue.svg");
+}
+
+#menu > .menu a[href].monitor:hover {
+    background-image: url("../images/monitor-brown.svg");
+}
+
+#menu > .menu a.find {
+    background-image: url("../images/find-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.find:hover {
+    background-image: url("../images/find-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].find {
+    background-image: url("../images/find-blue.svg");
+}
+
+#menu > .menu a[href].find:hover {
+    background-image: url("../images/find-brown.svg");
+}
+
+#menu > .menu a.phone {
+    background-image: url("../images/phone-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.phone:hover {
+    background-image: url("../images/phone-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].phone {
+    background-image: url("../images/phone-blue.svg");
+}
+
+#menu > .menu a[href].phone:hover {
+    background-image: url("../images/phone-brown.svg");
+}
+
+#menu > .menu a.people {
+    background-image: url("../images/people-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.people:hover {
+    background-image: url("../images/people-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].people {
+    background-image: url("../images/people-blue.svg");
+}
+
+#menu > .menu a[href].people:hover {
+    background-image: url("../images/people-brown.svg");
+}
+
+#menu > .menu a.chat {
+    background-image: url("../images/chat-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.chat:hover {
+    background-image: url("../images/chat-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].chat {
+    background-image: url("../images/chat-blue.svg");
+}
+
+#menu > .menu a[href].chat:hover {
+    background-image: url("../images/chat-brown.svg");
+}
+
+#menu > .menu a.find-person {
+    background-image: url("../images/find-person-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.find-person:hover {
+    background-image: url("../images/find-person-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].find-person {
+    background-image: url("../images/find-person-blue.svg");
+}
+
+#menu > .menu a[href].find-person:hover {
+    background-image: url("../images/find-person-brown.svg");
+}
+
+#menu > .menu a.help {
+    background-image: url("../images/help-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.help:hover {
+    background-image: url("../images/help-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].help {
+    background-image: url("../images/help-blue.svg");
+}
+
+#menu > .menu a[href].help:hover {
+    background-image: url("../images/help-brown.svg");
+}
+
+#menu > .menu a.expand {
+    background-image: url("../images/expand-blue.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a.expand:hover {
+    background-image: url("../images/expand-brown.svg"), url("../images/arrow-right-blue.svg");
+}
+
+#menu > .menu a[href].expand {
+    background-image: url("../images/expand-blue.svg");
+}
+
+#menu > .menu a[href].expand:hover {
+    background-image: url("../images/expand-brown.svg");
+}
+
+#menu > .dd {
+    position: absolute;
+    top: var(--altura-menu);
+    right: 0.6rem;
+    background: #efedea;
+    display: none;
+    flex-flow: column nowrap;
+    padding: 1rem;
+    border-bottom: 1px solid #ffd400;
+    box-shadow: 0px 0.25rem 0.5rem 0 #cccccc;
+}
+
+#menu > .dd.aberto {
+    display: flex;
+}
+
+#menu > .dd a {
+    padding: 0.5rem 0.5rem;
+    text-decoration: none;
+
+}
+
+#menu .menu div.dd-mobile {
+    display: none;
+    flex-flow: column nowrap;
+    position: static;
+    height: auto;
+    background: transparent;
+}
+
+#menu .menu div.dd-mobile.aberto {
+    display: flex;
+}
+
+#menu .menu div.dd-mobile a {
+    margin: 0.75rem 0 0 0;
+    transition: all 1s ease-in-out;
+}

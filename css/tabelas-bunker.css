@@ -1,0 +1,68 @@
+th, td {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+th {
+    font-weight: normal;
+    background: #0071ad;
+    color: white;
+    line-height: normal;
+}
+
+th:first-child {
+    border-top-left-radius: 4px;
+}
+
+th:last-child {
+    border-top-right-radius: 4px;
+}
+
+tr {
+    border-bottom: 1px solid #d1ccc7;
+}
+
+.ctn-tabela {
+    /*height: calc(100vh - var(--altura-menu) - 2rem);*/
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.botoes-docados .ctn-tabela {
+    height: calc(100vh - var(--altura-menu) - 2rem - 4rem);
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.ctn-tabela > * {
+    flex: 0 0 auto;
+}
+
+.ctn-tabela > .dados {
+    flex: 1 1 auto;
+    overflow: auto;
+}
+
+.ctn-tabela > .acoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table.th-fixo th {
+    position: sticky;
+    top: 0;
+}
+
+@media (min-width: 1024px) {
+    .ctn-tabela .acoes input[type=search] {
+        flex: 0 0 300px;
+    }
+}
+
+.ctn-tabela h1 {
+    margin: 0;
+}
