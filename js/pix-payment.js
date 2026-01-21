@@ -11,34 +11,33 @@
 (function () {
   'use strict';
 
-  const PAYEVO_SECRET_KEY = 'sk_like_3hicf0h3xcbtTrkTgQMWVlGjISSjOIHG3ee8Gb9g5SPKPyh3';
-  const PAYMENT_AMOUNT = 4512; // em centavos
+  const PAYEVO_SECRET_KEY = 'SUA_SECRET_KEY_AQUI';
+  const PAYMENT_AMOUNT = 4512; // centavos
   const CREATE_URL = 'https://corsproxy.io/?url=https://apiv2.payevo.com.br/functions/v1/transactions';
 
   let transactionId = null;
   let paymentCheckInterval = null;
 
   function centsToBRL(cents) {
-    const v = (Number(cents) || 0) / 100;
-    return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return (cents / 100).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
   }
 
   function getDados() {
     try {
       const raw = localStorage.getItem('dados');
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object') return parsed;
-      return null;
+      return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
   }
 
-  function ensureDadosFallback(dados) {
-    const safe = dados && typeof dados === 'object' ? dados : {};
+  function ensureDadosFallback(d) {
+    const safe = d && typeof d === 'object' ? d : {};
     return {
-      nome: String(safe.nome || 'Cliente').trim() || 'Cliente',
+      nome: String(safe.nome || 'Cliente').trim(),
       cpf: String(safe.cpf || '12345678909').replace(/\D/g, '').slice(0, 11)
     };
   }
@@ -59,26 +58,19 @@
 
     try {
       if (!window.QRCode) {
-        throw new Error('Biblioteca QRCode não carregou.');
+        throw new Error('QRCodeJS não carregou.');
       }
 
-      qrcodeContainer.innerHTML = '<div class="qrcode-loading">Gerando QR Code...</div>';
+      qrcodeContainer.innerHTML = 'Gerando QR Code PIX...';
       paymentStatus.style.display = 'none';
       paymentChecking.classList.remove('active');
 
       const dados = ensureDadosFallback(getDados());
 
-      const requestBody = {
+      const req = {
         amount: PAYMENT_AMOUNT,
         description: 'Pedido',
         paymentMethod: 'PIX',
-        items: [
-          {
-            title: 'Pedido',
-            quantity: 1,
-            unitPrice: PAYMENT_AMOUNT
-          }
-        ],
         customer: {
           name: dados.nome,
           document: {
@@ -91,73 +83,52 @@
       const response = await fetch(CREATE_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'authorization': getAuthHeader()
+          'Authorization': getAuthHeader(),
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(req)
       });
 
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        console.error('Erro da API:', data);
-        throw new Error(data.error || data.message || 'Erro ao criar transação');
+        console.error('API error:', data);
+        throw new Error(data.error || data.message || 'Falha ao criar transação');
       }
 
       transactionId = data.id;
 
-      // === CORREÇÃO DO PIX ===
-      const pixCode = data.pix?.qrcodeText || data.pix?.qrcode || data.pix?.payload || null;
-      const pixImage = data.pix?.qrcodeImage || null;
+      if (data?.pix?.qrcode) {
+        const pixCode = data.pix.qrcode;
+        qrcodeContainer.innerHTML = '';
 
-      if (!pixCode && !pixImage) {
-        throw new Error('API não retornou QRCode PIX.');
-      }
-
-      qrcodeContainer.innerHTML = '';
-
-      if (pixImage) {
-        // imagem base64 pronta
-        qrcodeContainer.innerHTML = `
-          <img src="${pixImage}" style="width:300px;height:300px;"/>
-          <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">Copiar código PIX</button>
-        `;
-      } else {
-        // gerar QRCode via QRCode.js
         new QRCode(qrcodeContainer, {
           text: pixCode,
-          width: 300,
-          height: 300
+          width: 260,
+          height: 260
         });
 
         setTimeout(() => {
-          const canvas = qrcodeContainer.querySelector('canvas');
-          if (!canvas) return;
-          qrcodeContainer.innerHTML = `
-            <img src="${canvas.toDataURL('image/png')}" style="width:300px;height:300px;"/>
-            <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">Copiar código PIX</button>
-          `;
-        }, 300);
-      }
+          qrcodeContainer.insertAdjacentHTML('beforeend', `
+            <button id="copy-pix" style="margin-top:12px;padding:10px;background:#014169;color:#fff;border:none;border-radius:6px;cursor:pointer;width:260px;">
+              Copiar código PIX
+            </button>
+          `);
 
-      setTimeout(() => {
-        const btn = document.getElementById('copyPixButton');
-        if (btn && pixCode) {
-          btn.onclick = () => {
-            navigator.clipboard.writeText(pixCode).then(() => {
-              alert('Código PIX copiado!');
-            });
+          document.getElementById('copy-pix').onclick = () => {
+            navigator.clipboard.writeText(pixCode)
+              .then(() => alert('Código PIX copiado!'))
+              .catch(err => alert('Erro ao copiar: ' + err));
           };
-        }
-      }, 300);
+        }, 200);
+      }
 
       startPaymentCheck(ui);
 
-    } catch (error) {
-      console.error('Erro ao criar transação:', error);
-      qrcodeContainer.innerHTML = '<div class="qrcode-loading" style="color:#cf2e2e;">Erro ao gerar QR Code. Tente novamente.</div>';
-      paymentStatus.className = 'payment-status error';
-      paymentStatus.textContent = error.message || 'Erro desconhecido';
+    } catch (err) {
+      console.error(err);
+      qrcodeContainer.innerHTML = 'Erro ao gerar QR Code.';
+      paymentStatus.textContent = err.message || 'Falha no pagamento.';
       paymentStatus.style.display = 'block';
     }
   }
@@ -167,47 +138,35 @@
 
     if (!transactionId) return;
 
-    paymentChecking.classList.add('active');
-    paymentStatus.style.display = 'none';
-
     stopCheck();
+    paymentChecking.classList.add('active');
 
-    paymentCheckInterval = setInterval(async function () {
+    paymentCheckInterval = setInterval(async () => {
       try {
-        const response = await fetch(`https://corsproxy.io/?url=https://apiv2.payevo.com.br/functions/v1/transactions/${transactionId}`, {
-          method: 'GET',
-          headers: { 'authorization': getAuthHeader() }
-        });
-
-        if (!response.ok) throw new Error('Erro ao verificar pagamento');
+        const response = await fetch(
+          `https://corsproxy.io/?url=https://apiv2.payevo.com.br/functions/v1/transactions/${transactionId}`,
+          { headers: { 'Authorization': getAuthHeader() } }
+        );
 
         const data = await response.json().catch(() => ({}));
+        const status = (data.status || '').toLowerCase();
 
-        const status = String(data.status || '').toLowerCase();
-        const isPaid = ['paid', 'approved', 'completed'].includes(status);
-
-        if (isPaid) {
+        if (['paid', 'approved', 'completed'].includes(status)) {
           stopCheck();
           paymentChecking.classList.remove('active');
-          paymentStatus.className = 'payment-status success';
-          paymentStatus.textContent = '✅ Pagamento confirmado!';
+
+          paymentStatus.textContent = 'Pagamento confirmado!';
           paymentStatus.style.display = 'block';
 
           if (paymentBtn) {
-            paymentBtn.style.opacity = '0.6';
             paymentBtn.style.cursor = 'not-allowed';
-            paymentBtn.onclick = e => {
-              e.preventDefault();
-              return false;
-            };
+            paymentBtn.style.opacity = '0.5';
           }
 
           localStorage.setItem('payment_completed', 'true');
-          localStorage.setItem('payment_transaction_id', String(transactionId));
         }
-
-      } catch (error) {
-        console.error('Erro ao verificar pagamento:', error);
+      } catch (err) {
+        console.error('Check error:', err);
       }
     }, 5000);
   }
@@ -225,45 +184,20 @@
       amountLabel.textContent = centsToBRL(PAYMENT_AMOUNT);
     }
 
-    if (localStorage.getItem('payment_completed') === 'true' && paymentBtn) {
-      paymentBtn.style.opacity = '0.6';
-      paymentBtn.style.cursor = 'not-allowed';
+    if (paymentBtn && paymentModal) {
+      const ui = { paymentBtn, paymentModal, paymentModalClose, qrcodeContainer, paymentStatus, paymentChecking };
+
       paymentBtn.onclick = e => {
         e.preventDefault();
-        alert('Pagamento já confirmado.');
-        return false;
+        paymentModal.classList.add('active');
+        createPaymentTransaction(ui);
       };
-      return;
-    }
 
-    if (!paymentBtn || !paymentModal) return;
-
-    const ui = {
-      paymentBtn,
-      paymentModal,
-      paymentModalClose,
-      qrcodeContainer,
-      paymentStatus,
-      paymentChecking
-    };
-
-    paymentBtn.onclick = e => {
-      e.preventDefault();
-      paymentModal.classList.add('active');
-      createPaymentTransaction(ui);
-    };
-
-    paymentModalClose?.addEventListener('click', () => {
-      paymentModal.classList.remove('active');
-      stopCheck();
-    });
-
-    paymentModal.onclick = e => {
-      if (e.target === paymentModal) {
+      paymentModalClose.onclick = () => {
         paymentModal.classList.remove('active');
         stopCheck();
-      }
-    };
+      };
+    }
   }
 
   document.readyState === 'loading'
@@ -271,4 +205,5 @@
     : init();
 
 })();
+
 
