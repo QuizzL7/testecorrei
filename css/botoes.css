@@ -1,0 +1,369 @@
+:root {
+    --lado-botao: 3rem;
+}
+
+button, a.button {
+    background: no-repeat center;
+    flex: 0 0 var(--lado-botao);
+    height: var(--lado-botao);
+    width: var(--lado-botao);
+    border: none;
+    outline: none;
+    padding: 0 0.5rem;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:hover, a.button:hover {
+    background-color: #f5f5f5;
+    color: black;
+}
+
+button:active, a.button:active {
+    background-color: #d9d9db;
+}
+
+button:focus, a.button:focus {
+    box-shadow: 0 0 2px 2px #eeeeee;
+}
+
+button.menu, a.button.menu,
+button.mais, a.button.mais,
+button.voltar, a.button.voltar,
+button.docar, a.button.docar,
+button.person-pin, a.button.person-pin,
+button.search, a.button.search,
+button.checkbox, a.button.checkbox,
+button.edit, a.button.edit,
+button.delete, a.button.delete,
+button.input, a.button.input,
+button.novo, a.button.novo,
+button.next, a.button.next,
+button.person, a.button.person,
+button.check, a.button.check,
+button.filter, a.button.filter,
+button.tune, a.button.tune,
+button.share, a.button.share,
+button.swap, a.button.swap {
+    border-radius: 50%;
+    padding: 0;
+}
+
+button.menu, a.button.menu {
+    background-image: url("../images/menu.svg");
+}
+
+body.menu-docado button.menu, a.button.menu {
+    background-image: url("../images/menu-open.svg");
+}
+
+button.mais, a.button.mais {
+    background-image: url("../images/more-vert.svg");
+}
+
+button.voltar, a.button.voltar {
+    background-image: url("../images/back.svg");
+}
+
+button.docar, a.button.docar {
+    background-image: url("../images/room.svg");
+}
+
+button.person-pin, a.button.person-pin {
+    background-image: url("../images/person-pin.svg");
+}
+
+button.search, a.button.search {
+    background-image: url("../images/search.svg");
+}
+
+button.checkbox, a.button.checkbox {
+    background-image: url("../images/checkbox.svg");
+}
+
+button.checkbox.checked, a.button.checkbox.checked {
+    background-image: url("../images/checkbox-checked.svg");
+}
+
+button.edit, a.button.edit {
+    background-image: url("../images/edit.svg");
+}
+
+button.delete, a.button.delete {
+    background-image: url("../images/delete.svg");
+}
+
+button.input, a.button.input {
+    background-image: url("../images/input.svg");
+}
+
+button.novo, a.button.novo {
+    background-image: url("../images/add.svg");
+}
+
+button.next, a.button.next {
+    background-image: url("../images/next.svg");
+}
+
+button.person, a.button.person {
+    background-image: url("../images/person.svg");
+}
+
+button.check, a.button.check {
+    background-image: url("../images/check.svg");
+}
+
+button.check.checked, a.button.check.checked {
+    background-image: url("../images/check-checked.svg");
+}
+
+button.check.checked, a.button.check.checked {
+    background-image: url("../images/check-checked.svg");
+}
+
+button.filter, a.button.filter {
+    background-image: url("../images/filter.svg");
+}
+
+button.tune, a.button.tune {
+    background-image: url("../images/tune.svg");
+}
+
+button.tune.tuned, a.button.tune.tuned {
+    background-image: url("../images/tune-blue.svg");
+}
+
+button.share, a.button.share {
+    background-image: url("../images/share.svg");
+}
+
+button.swap, a.button.swap {
+    background-image: url("../images/swap.svg");
+}
+
+.buttons {
+    position: relative;
+}
+
+.buttons > div {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    border-radius: 0.25rem;
+    background: white;
+    box-shadow: 0 0 4px 2px #a8a8a8;
+    display: none;
+    flex-flow: column nowrap;
+    padding: 0.25rem 0;
+}
+
+.buttons > div.aberto {
+    display: flex;
+}
+
+.buttons > div button, .buttons > div a.button {
+    height: var(--lado-botao);
+    width: auto;
+    min-width: var(--lado-botao);
+    text-align: left;
+    border-radius: 0;
+    padding: 0 1rem 0 0.85rem;
+    justify-content: flex-start;
+}
+
+.buttons > div button:focus, .buttons > div a.button:focus {
+    box-shadow: none;
+}
+
+.botoes {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.botoes button, .botoes a.button {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 1rem;
+    background: #807569;
+    color: white;
+    font-weight: bold;
+    margin: 0 2px 2px 0;
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.botoes button:last-child, .botoes a.button:last-child {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+    .botoes button, .botoes a.button {
+        height: 2.25rem;
+        font-size: 0.8rem;
+    }
+}
+
+.botoes button:hover, .botoes a.button:hover {
+    background: #52473b;
+}
+
+.botoes button:active, .botoes a.button:active {
+    background: #52473b;
+}
+
+.botoes button:focus, .botoes a.button:focus {
+    background: #807569;
+    box-shadow: 0 0 0 0.1rem #52473b;
+}
+
+.botoes button.primario, .botoes a.button.primario {
+    background: #1a73e8;
+    color: white;
+}
+
+
+.botoes button.desativado, .botoes a.button.desativado {
+    background: #807569;
+    color: white;
+}
+
+.botoes button.primario:hover, .botoes a.button.primario:hover {
+    background: #1766cf;
+}
+
+.botoes button.primario:active, .botoes a.button.primario:active {
+    background: #1458b3;
+}
+
+.botoes button.perigo, .botoes a.button.perigo {
+    background: #d60000;
+    color: white;
+}
+
+.botoes button.perigo:hover, .botoes a.button.perigo:hover {
+    background: #9e1c1c;
+}
+
+.botoes button.perigo:active, .botoes a.button.perigo:active {
+    background: #9e1c1c;
+}
+
+.botoes button.perigo:focus, .botoes a.button.perigo:focus {
+    background: #d60000;
+    box-shadow: 0 0 0 0.1rem #9e1c1c;
+}
+
+.botoes button.confirmacao, .botoes a.button.confirmacao {
+    background: #597340;
+    color: white;
+}
+
+.botoes button.confirmacao:hover, .botoes a.button.confirmacao:hover {
+    background: #455e30;
+}
+
+.botoes button.confirmacao:active, .botoes a.button.confirmacao:active {
+    background: #455e30;
+}
+
+.botoes button.confirmacao:focus, .botoes a.button.confirmacao:focus {
+    background: #597340;
+    box-shadow: 0 0 0 0.1rem #455e30;
+}
+
+.botoes button.link, .botoes a.button.link {
+    background: transparent;
+    color: #202124;
+}
+
+.botoes button.link:hover, .botoes a.button.link:hover {
+    border: 1px solid #f2f2f2;
+}
+
+.botoes button.link:active, .botoes a.button.link:active {
+    border: 1px solid #d8d8d8;
+}
+
+.botoes button.link:focus, .botoes a.button.link:focus {
+    box-shadow: 0 0 0 0.1rem #d8d8d8;
+}
+
+button.novo, a.button.novo,
+button.next, a.button.next {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-size: 2rem;
+    background-color: white;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+button.next, a.button.next {
+    background-color: #1a73e8;
+}
+
+button.novo:hover, a.button.novo:hover, button.next:hover, a.button.next:hover {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+}
+
+button.novo:active, a.button.novo:active, button.next:active, a.button.next:active {
+    background-color: #fbfbfb;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.8);
+}
+
+button.next:active, a.button.next:active {
+    background-color: #1a5cb9;
+}
+
+#regiao-botoes {
+    height: 3.5rem;
+}
+
+button.tag, a.button.tag {
+    flex: 0 1 auto;
+    width: auto;
+    border-radius: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+    border: 1px solid #e0e0e0;
+    margin: 0 0.5rem;
+}
+
+button.tag.selected, a.button.tag.selected {
+    background: var(--azul);
+    color: white;
+    border-color: transparent;
+}
+
+@media (min-width: 1024px) {
+    button.novo, a.button.novo,
+    button.next, a.button.next {
+        right: auto;
+        left: 50%;
+        margin-left: calc(-3.5rem / 2);
+        bottom: 1.5rem;
+    }
+
+    body.menu-aberto button.novo, body.menu-aberto a.button.novo,
+    body.menu-aberto button.next, body.menu-aberto a.button.next {
+        margin-left: calc((-3.5rem + 15rem) / 2);
+    }
+
+    #regiao-botoes {
+        height: 4rem;
+    }
+}

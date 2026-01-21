@@ -1,0 +1,234 @@
+.campos {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.campos > .campo {
+    flex: 1 1 100%;
+}
+
+@media (min-width: 1024px) {
+
+    .campos > .campo {
+        padding: 0.5rem;
+    }
+
+
+    .campos > .campo.col-1 {
+        flex: 0 1 calc(100% / 12);
+    }
+
+    .campos > .campo.col-2 {
+        flex: 0 1 calc(200% / 12);
+    }
+
+    .campos > .campo.col-3 {
+        flex: 0 1 calc(300% / 12);
+    }
+
+    .campos > .campo.col-4 {
+        flex: 0 1 calc(400% / 12);
+    }
+
+    .campos > .campo.col-5 {
+        flex: 0 1 calc(500% / 12);
+    }
+
+    .campos > .campo.col-6 {
+        flex: 0 1 calc(600% / 12);
+    }
+
+    .campos > .campo.col-7 {
+        flex: 0 1 calc(700% / 12);
+    }
+
+    .campos > .campo.col-8 {
+        flex: 0 1 calc(800% / 12);
+    }
+
+    .campos > .campo.col-9 {
+        flex: 0 1 calc(900% / 12);
+    }
+
+    .campos > .campo.col-10 {
+        flex: 0 1 calc(1000% / 12);
+    }
+
+    .campos > .campo.col-11 {
+        flex: 0 1 calc(1100% / 12);
+    }
+
+    .campos > .campo.col-12 {
+        flex: 0 1 calc(1200% / 12);
+    }
+}
+
+.campos > .campo input, .campos > .campo input:invalid,
+.campos > .campo select, .campos > .campo select:invalid,
+.campos > .campo textarea, .campos > .campo textarea:invalid,
+input[type=text], input[type=text]:invalid, input[type=search], input[type=search]:invalid
+select, select:invalid,
+textarea, textarea:invalid {
+    display: block;
+    width: 100%;
+    outline: none;
+    line-height: 1.9rem;
+    background-color: white;
+    color: #807569;
+    border: 1px solid #807569;
+    padding: 0.3125rem 0.9375rem;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.campos > .campo input:focus,
+.campos > .campo select:focus,
+.campos > .campo textarea:focus {
+    box-shadow: 0 0 0 2px var(--azul);
+    border: 1px solid var(--azul);
+}
+
+.campos > .campo input.invalid:not([type=checkbox]):not([type=radio]),
+.campos > .campo select.invalid,
+.campos > .campo textarea.invalid {
+    box-shadow: 0 0 0 2px #f08080;
+    border: 1px solid lightcoral;
+}
+
+.campos > .campo input:disabled,
+.campos > .campo select:disabled,
+.campos > .campo textarea:disabled {
+    background: #eeeeee;
+    color: #908579;
+}
+
+.campos > .campo select {
+    background: url(../images/arrow-down.svg) no-repeat center right 0.25rem;
+    -webkit-appearance: none;
+}
+
+.campos > .campo input[type=radio], .campos > .campo input[type=checkbox] {
+    width: auto;
+}
+
+.campos > .campo input[type=radio]:focus, .campos > .campo input[type=checkbox]:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.campos > .campo input[type=number] {
+    text-align: right;
+    -moz-appearance: textfield;
+}
+
+.campos > .campo input.moeda {
+    text-align: right;
+}
+
+.campos > .campo input[type=number]::-webkit-inner-spin-button,
+.campos > .campo input[type=month]::-webkit-inner-spin-button,
+.campos > .campo input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.campos > .campo input[type=date], .campos > .campo input[type=time] {
+    text-align: center;
+}
+
+.campos > .campo input[type=range] {
+    -webkit-appearance: none;
+}
+
+.campos > .campo input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    border: 1px solid #807569;
+    border-radius: 5px;
+    background: #807569;
+    margin-top: -10px;
+}
+
+.campos > .campo input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    background: lightgray;
+    border-radius: 5px;
+    height: 4px;
+    margin: 0.6rem;
+}
+
+.campos > .campo input[type=range]::-moz-range-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
+    border: 1px solid #807569;
+    border-radius: 5px;
+    background: #807569;
+}
+
+.campos > .campo input[type=range]::-moz-range-track {
+    background: lightgray;
+    border-radius: 5px;
+    height: 4px;
+}
+
+.campos > .campo > .rotulo {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    padding: 0.25rem 0;
+    margin-bottom: 0.25rem;
+}
+
+.campos > .campo > .rotulo label {
+    color: #222222;
+    margin-right: 0.5rem;
+}
+
+.campos > .campo.required > .rotulo label::after {
+    content: "*";
+    color: #f08080;
+}
+
+.campos > .campo > .controle {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.campos > .campo > .controle.linhas {
+    flex-flow: row nowrap;
+    align-items: flex-start;
+}
+
+.campos > .campo > .controle label {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    padding: 0.4rem;
+}
+
+.campos > .campo > .controle button.com-texto, .campos > .campo > .controle a.button.com-texto {
+    flex: 0 1 auto;
+    height: auto;
+    align-self: stretch;
+    width: auto;
+    margin: 0 0.25rem;
+    padding: 0 0.5rem;
+}
+
+@media (min-width: 1024px) {
+    .campos > .campo > .controle label {
+        padding: 0.1rem;
+    }
+}
+
+.campos > .campo > .controle input[type=radio], .campos > .campo > .controle input[type=checkbox] {
+    margin-right: 0.25rem;
+}
+
+.campos > .campo > .mensagem {
+    font-style: italic;
+    padding: 0.25rem 0;
+    color: #222222;
+}

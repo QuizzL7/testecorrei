@@ -1,0 +1,71 @@
+#alerta {
+    position: fixed;
+    z-index: 11;
+    padding: 1rem;
+    bottom: -100vh;
+    left: 1rem;
+    right: 1rem;
+    background: var(--cor-azul-correios);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: 0.4s ease-in-out bottom;
+    display: flex;
+    margin: auto;
+    font-family: 'Trebuchet MS', 'arial', 'helvetica', 'Open Sans', sans-serif;
+}
+
+body.alto-contraste #alerta {
+    background-color: black;
+    border: 1px solid white;
+}
+
+@media (min-width: 768px) {
+    #alerta {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%);
+        border: 2px solid White;
+        box-shadow: 0px 0px 33px 3px #d8d8d8;
+
+    }
+}
+
+#alerta.aberto {
+    padding: 1.2rem 2.5rem;
+    bottom: 30vh !important;
+}
+@media (max-width: 768px) {
+    #alerta.aberto{
+        padding: 1rem;
+        bottom: 5vh !important;
+    }
+}
+#alerta .msg {
+    font-size: 1rem;
+    color: white;
+    flex: 1 1 auto;
+}
+
+#alerta .act {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: 1rem;
+}
+
+#alerta .act > a {
+    font-size: 1rem;
+    margin: 0 0.25rem;
+    color: var(--cor-link-bg-azul);
+    text-decoration: none;
+}
+
+#alerta .act > a:hover,
+#alerta .act > a:focus {
+    color: var(--cor-amarelo-correios);
+}
+
+body.alto-contraste #alerta .act > a,
+body.alto-contraste #alerta .act > a:hover,
+body.alto-contraste #alerta .act > a:focus {
+    color: var(--cor-link-contraste);
+}

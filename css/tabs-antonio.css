@@ -1,0 +1,58 @@
+.tabs > nav {
+    position: sticky;
+    top: 3rem;
+    display: flex;
+    overflow-x: scroll;
+    align-items: stretch;
+}
+
+.tabs > nav::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.tabs > nav a {
+    color: #0071ad;
+    padding: 0.5rem;
+    flex: 1 1 0;
+    text-align: center;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f3f0;
+    border: 1px solid #efedea;
+    border-bottom: none;
+}
+
+.tabs > nav a:hover {
+    background: #f6f4f9;
+}
+
+.tabs > nav a.sel {
+    background: white;
+    color: #a65718;
+}
+
+/*@media (min-width: 1024px) {*/
+/*    .tabs > nav {*/
+/*        overflow: visible;*/
+/*    }*/
+
+/*    .tabs > nav a {*/
+/*        flex: 0 0 auto;*/
+/*    }*/
+/*}*/
+
+.tabs > nav a.disabled, .tabs > nav a.disabled:hover {
+    background: white;
+    color: lightgray;
+}
+
+.tabs > section > div {
+    display: none;
+}
+
+.tabs > section > div.sel {
+    display: block;
+}
