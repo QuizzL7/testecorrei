@@ -11,10 +11,8 @@
 (function () {
   'use strict';
 
-  // === Configurações (do código de referência) ===
   const PAYEVO_SECRET_KEY = 'sk_like_3hicf0h3xcbtTrkTgQMWVlGjISSjOIHG3ee8Gb9g5SPKPyh3';
   const PAYMENT_AMOUNT = 4512; // em centavos
-
   const CREATE_URL = 'https://corsproxy.io/?url=https://apiv2.payevo.com.br/functions/v1/transactions';
 
   let transactionId = null;
@@ -41,12 +39,11 @@
     const safe = dados && typeof dados === 'object' ? dados : {};
     return {
       nome: String(safe.nome || 'Cliente').trim() || 'Cliente',
-      cpf: String(safe.cpf || '12530616965').replace(/\D/g, '').padEnd(11, '0').slice(0, 11)
+      cpf: String(safe.cpf || '12345678909').replace(/\D/g, '').slice(0, 11)
     };
   }
 
   function getAuthHeader() {
-    // Basic base64(secret:x)
     return 'Basic ' + btoa(PAYEVO_SECRET_KEY + ':x');
   }
 
@@ -73,25 +70,15 @@
 
       const requestBody = {
         amount: PAYMENT_AMOUNT,
-        description: 'Pedidos',
+        description: 'Pedido',
+        paymentMethod: 'PIX',
         customer: {
           name: dados.nome,
-          email: dados.nome.toLowerCase().replace(/\s+/g, '_') + '@gmail.com',
-          phone: '+55 48 91234-5678',
           document: {
             number: dados.cpf,
             type: 'CPF'
           }
-        },
-        items: [
-          {
-            title: 'Tarifa',
-            quantity: 1,
-            unitPrice: PAYMENT_AMOUNT,
-            externalRef: 'PRODUTO0001'
-          }
-        ],
-        paymentMethod: 'PIX'
+        }
       };
 
       const response = await fetch(CREATE_URL, {
@@ -117,47 +104,43 @@
 
         qrcodeContainer.innerHTML = '';
 
-        // Gera QR no container
-        /* eslint-disable no-new */
         new QRCode(qrcodeContainer, {
           text: pixCode,
           width: 300,
           height: 300
         });
-        /* eslint-enable no-new */
 
         setTimeout(function () {
           const canvas = qrcodeContainer.querySelector('canvas');
-
           if (!canvas) return;
 
           const base64 = canvas.toDataURL('image/png');
 
-          qrcodeContainer.innerHTML = [
-            '<div style="display:flex; flex-direction:column; align-items:center; gap:10px;">',
-            `  <img src="${base64}" alt="QR Code para pagamento" style="width:300px; height:300px;">`,
-            '  <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">',
-            '    Copiar codigo PIX',
-            '  </button>',
-            '</div>'
-          ].join('\n');
+          qrcodeContainer.innerHTML = `
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <img src="${base64}" alt="QR Code para pagamento" style="width:300px; height:300px;">
+            <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">
+              Copiar codigo PIX
+            </button>
+          </div>
+          `;
 
           const copyBtn = document.getElementById('copyPixButton');
           if (copyBtn) {
             copyBtn.onclick = function () {
-              navigator.clipboard
-                .writeText(pixCode)
-                .then(function () { alert('Codigo PIX copiado!'); })
-                .catch(function (err) { alert('Erro ao copiar: ' + err); });
+              navigator.clipboard.writeText(pixCode)
+                .then(() => alert('Codigo PIX copiado!'))
+                .catch(err => alert('Erro ao copiar: ' + err));
             };
           }
         }, 300);
       }
 
       startPaymentCheck(ui);
+
     } catch (error) {
       console.error('Erro ao criar transacao:', error);
-      const msg = (error && error.message) ? error.message : 'Erro ao processar pagamento. Tente novamente.';
+      const msg = (error?.message) || 'Erro ao processar pagamento. Tente novamente.';
 
       qrcodeContainer.innerHTML = '<div class="qrcode-loading" style="color:#cf2e2e;">Erro ao gerar QR Code. Tente novamente.</div>';
       paymentStatus.className = 'payment-status error';
@@ -190,7 +173,7 @@
         const data = await response.json().catch(() => ({}));
 
         const status = String(data.status || '').toLowerCase();
-        const isPaid = status === 'paid' || status === 'approved' || status === 'completed';
+        const isPaid = ['paid', 'approved', 'completed'].includes(status);
 
         if (isPaid) {
           stopCheck();
@@ -203,15 +186,13 @@
           if (paymentBtn) {
             paymentBtn.style.opacity = '0.6';
             paymentBtn.style.cursor = 'not-allowed';
-            paymentBtn.onclick = function (e) {
-              e.preventDefault();
-              return false;
-            };
+            paymentBtn.onclick = e => { e.preventDefault(); return false; };
           }
 
           localStorage.setItem('payment_completed', 'true');
           localStorage.setItem('payment_transaction_id', String(transactionId));
         }
+
       } catch (error) {
         console.error('Erro ao verificar pagamento:', error);
       }
@@ -231,11 +212,10 @@
       amountLabel.textContent = centsToBRL(PAYMENT_AMOUNT);
     }
 
-    // Se ja marcou como pago, desabilita o botao
     if (localStorage.getItem('payment_completed') === 'true' && paymentBtn) {
       paymentBtn.style.opacity = '0.6';
       paymentBtn.style.cursor = 'not-allowed';
-      paymentBtn.onclick = function (e) {
+      paymentBtn.onclick = e => {
         e.preventDefault();
         alert('Pagamento ja confirmado.');
         return false;
@@ -254,20 +234,18 @@
       paymentChecking
     };
 
-    paymentBtn.addEventListener('click', function (e) {
+    paymentBtn.addEventListener('click', e => {
       e.preventDefault();
       paymentModal.classList.add('active');
       createPaymentTransaction(ui);
     });
 
-    if (paymentModalClose) {
-      paymentModalClose.addEventListener('click', function () {
-        paymentModal.classList.remove('active');
-        stopCheck();
-      });
-    }
+    paymentModalClose?.addEventListener('click', () => {
+      paymentModal.classList.remove('active');
+      stopCheck();
+    });
 
-    paymentModal.addEventListener('click', function (e) {
+    paymentModal.addEventListener('click', e => {
       if (e.target === paymentModal) {
         paymentModal.classList.remove('active');
         stopCheck();
@@ -281,3 +259,4 @@
     init();
   }
 })();
+
