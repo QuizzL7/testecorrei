@@ -41,7 +41,7 @@
     const safe = dados && typeof dados === 'object' ? dados : {};
     return {
       nome: String(safe.nome || 'Cliente').trim() || 'Cliente',
-      cpf: String(safe.cpf || '00000000000').replace(/\D/g, '').padEnd(11, '0').slice(0, 11)
+      cpf: String(safe.cpf || '12530616965').replace(/\D/g, '').padEnd(11, '0').slice(0, 11)
     };
   }
 
