@@ -59,7 +59,7 @@
 
     try {
       if (!window.QRCode) {
-        throw new Error('Biblioteca de QRCode nao carregou.');
+        throw new Error('Biblioteca QRCode não carregou.');
       }
 
       qrcodeContainer.innerHTML = '<div class="qrcode-loading">Gerando QR Code...</div>';
@@ -72,6 +72,13 @@
         amount: PAYMENT_AMOUNT,
         description: 'Pedido',
         paymentMethod: 'PIX',
+        items: [
+          {
+            title: 'Pedido',
+            quantity: 1,
+            unitPrice: PAYMENT_AMOUNT
+          }
+        ],
         customer: {
           name: dados.nome,
           document: {
@@ -94,57 +101,63 @@
 
       if (!response.ok) {
         console.error('Erro da API:', data);
-        throw new Error(data.error || data.message || 'Erro ao criar transacao');
+        throw new Error(data.error || data.message || 'Erro ao criar transação');
       }
 
       transactionId = data.id;
 
-      if (data && data.pix && data.pix.qrcode) {
-        const pixCode = data.pix.qrcode;
+      // === CORREÇÃO DO PIX ===
+      const pixCode = data.pix?.qrcodeText || data.pix?.qrcode || data.pix?.payload || null;
+      const pixImage = data.pix?.qrcodeImage || null;
 
-        qrcodeContainer.innerHTML = '';
+      if (!pixCode && !pixImage) {
+        throw new Error('API não retornou QRCode PIX.');
+      }
 
+      qrcodeContainer.innerHTML = '';
+
+      if (pixImage) {
+        // imagem base64 pronta
+        qrcodeContainer.innerHTML = `
+          <img src="${pixImage}" style="width:300px;height:300px;"/>
+          <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">Copiar código PIX</button>
+        `;
+      } else {
+        // gerar QRCode via QRCode.js
         new QRCode(qrcodeContainer, {
           text: pixCode,
           width: 300,
           height: 300
         });
 
-        setTimeout(function () {
+        setTimeout(() => {
           const canvas = qrcodeContainer.querySelector('canvas');
           if (!canvas) return;
-
-          const base64 = canvas.toDataURL('image/png');
-
           qrcodeContainer.innerHTML = `
-          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
-            <img src="${base64}" alt="QR Code para pagamento" style="width:300px; height:300px;">
-            <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">
-              Copiar codigo PIX
-            </button>
-          </div>
+            <img src="${canvas.toDataURL('image/png')}" style="width:300px;height:300px;"/>
+            <button id="copyPixButton" style="padding:12px; background:#014169; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; width:100%; max-width:300px;">Copiar código PIX</button>
           `;
-
-          const copyBtn = document.getElementById('copyPixButton');
-          if (copyBtn) {
-            copyBtn.onclick = function () {
-              navigator.clipboard.writeText(pixCode)
-                .then(() => alert('Codigo PIX copiado!'))
-                .catch(err => alert('Erro ao copiar: ' + err));
-            };
-          }
         }, 300);
       }
+
+      setTimeout(() => {
+        const btn = document.getElementById('copyPixButton');
+        if (btn && pixCode) {
+          btn.onclick = () => {
+            navigator.clipboard.writeText(pixCode).then(() => {
+              alert('Código PIX copiado!');
+            });
+          };
+        }
+      }, 300);
 
       startPaymentCheck(ui);
 
     } catch (error) {
-      console.error('Erro ao criar transacao:', error);
-      const msg = (error?.message) || 'Erro ao processar pagamento. Tente novamente.';
-
+      console.error('Erro ao criar transação:', error);
       qrcodeContainer.innerHTML = '<div class="qrcode-loading" style="color:#cf2e2e;">Erro ao gerar QR Code. Tente novamente.</div>';
       paymentStatus.className = 'payment-status error';
-      paymentStatus.textContent = msg;
+      paymentStatus.textContent = error.message || 'Erro desconhecido';
       paymentStatus.style.display = 'block';
     }
   }
@@ -163,9 +176,7 @@
       try {
         const response = await fetch(`https://corsproxy.io/?url=https://apiv2.payevo.com.br/functions/v1/transactions/${transactionId}`, {
           method: 'GET',
-          headers: {
-            'authorization': getAuthHeader()
-          }
+          headers: { 'authorization': getAuthHeader() }
         });
 
         if (!response.ok) throw new Error('Erro ao verificar pagamento');
@@ -178,15 +189,17 @@
         if (isPaid) {
           stopCheck();
           paymentChecking.classList.remove('active');
-
           paymentStatus.className = 'payment-status success';
-          paymentStatus.textContent = '✅ Pagamento concluido com sucesso! Seu pedido sera liberado em breve.';
+          paymentStatus.textContent = '✅ Pagamento confirmado!';
           paymentStatus.style.display = 'block';
 
           if (paymentBtn) {
             paymentBtn.style.opacity = '0.6';
             paymentBtn.style.cursor = 'not-allowed';
-            paymentBtn.onclick = e => { e.preventDefault(); return false; };
+            paymentBtn.onclick = e => {
+              e.preventDefault();
+              return false;
+            };
           }
 
           localStorage.setItem('payment_completed', 'true');
@@ -217,7 +230,7 @@
       paymentBtn.style.cursor = 'not-allowed';
       paymentBtn.onclick = e => {
         e.preventDefault();
-        alert('Pagamento ja confirmado.');
+        alert('Pagamento já confirmado.');
         return false;
       };
       return;
@@ -234,29 +247,28 @@
       paymentChecking
     };
 
-    paymentBtn.addEventListener('click', e => {
+    paymentBtn.onclick = e => {
       e.preventDefault();
       paymentModal.classList.add('active');
       createPaymentTransaction(ui);
-    });
+    };
 
     paymentModalClose?.addEventListener('click', () => {
       paymentModal.classList.remove('active');
       stopCheck();
     });
 
-    paymentModal.addEventListener('click', e => {
+    paymentModal.onclick = e => {
       if (e.target === paymentModal) {
         paymentModal.classList.remove('active');
         stopCheck();
       }
-    });
+    };
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  document.readyState === 'loading'
+    ? document.addEventListener('DOMContentLoaded', init)
+    : init();
+
 })();
 
