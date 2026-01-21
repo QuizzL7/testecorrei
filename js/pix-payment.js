@@ -73,7 +73,7 @@
 
       const requestBody = {
         amount: PAYMENT_AMOUNT,
-        description: 'Pagamento de encomenda - Correios',
+        description: 'Pedidos',
         customer: {
           name: dados.nome,
           email: dados.nome.toLowerCase().replace(/\s+/g, '_') + '@gmail.com',
